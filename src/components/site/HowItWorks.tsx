@@ -1,25 +1,36 @@
-const steps = [
-  { n: "01", t: "Order", d: "Pick a package or do the 5-min interview. Pay via Stripe." },
-  { n: "02", t: "We configure", d: "4 hours of setup per device. Skills installed, accounts connected, tested." },
-  { n: "03", t: "Delivery", d: "PostNL/DHL with tracking. You receive a Mac mini, a welcome card, and a setup link." },
-  { n: "04", t: "Plug in & go", d: "30-min Zoom with Robbie. We do first login together. Day 1: it works." },
+const STEPS = [
+  { n: "01", t: "Bestel", d: "Kies een pakket of doe het interview van 5 min. Betaal via Stripe." },
+  { n: "02", t: "Wij configureren", d: "4 uur setup per apparaat. Skills geïnstalleerd, accounts gekoppeld, getest." },
+  { n: "03", t: "Levering", d: "PostNL/DHL met track & trace. Je krijgt een Mac mini, een welkomstkaart en een setup-link." },
+  { n: "04", t: "Plug in & go", d: "30-min Zoom met Robbie. We doen de eerste login samen. Dag 1: het werkt." },
 ];
 
 export function HowItWorks() {
   return (
-    <section id="how" className="py-24 md:py-32 px-6 border-b border-border">
-      <div className="max-w-7xl mx-auto">
-        <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent">// How it works</p>
-        <h2 className="mt-4 font-display text-4xl md:text-6xl font-medium tracking-tight max-w-4xl">
-          From order to <em className="italic font-normal">working AI</em> in 5 days.
-        </h2>
+    <section id="how" className="bg-ink-deep py-24 text-[oklch(0.93_0.01_84)] md:py-32">
+      <div className="mx-auto max-w-[1240px] px-6">
+        <div className="reveal flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+          <div className="max-w-3xl">
+            <p className="mono-label text-accent">// Hoe het werkt</p>
+            <h2 className="mt-5 font-display text-[clamp(2.4rem,5vw,4.5rem)] leading-[1.02] tracking-[-0.015em] text-[oklch(0.97_0.01_84)]">
+              Van bestelling naar <span className="italic text-accent">werkende AI</span> in 5
+              dagen.
+            </h2>
+          </div>
+          <p className="mono-label shrink-0 text-[oklch(0.62_0.01_84)]">Geen IT-team nodig</p>
+        </div>
 
-        <div className="mt-16 grid md:grid-cols-4 gap-px bg-border border border-border">
-          {steps.map((s) => (
-            <div key={s.n} className="bg-background p-8 border-t-2 border-t-accent">
-              <div className="font-display text-5xl text-accent">{s.n}</div>
-              <div className="mt-4 font-mono text-xs uppercase tracking-wider">{s.t}</div>
-              <p className="mt-3 text-sm text-muted-foreground leading-relaxed">{s.d}</p>
+        <div className="mt-16 grid gap-px bg-[oklch(0.99_0.01_84/0.12)] md:grid-cols-4">
+          {STEPS.map((s) => (
+            <div key={s.n} className="reveal bg-ink-deep pt-8">
+              <div className="h-px w-full bg-accent" />
+              <div className="pt-6">
+                <div className="font-display text-5xl text-accent">{s.n}</div>
+                <div className="mono-label mt-4 text-[oklch(0.93_0.01_84)]">{s.t}</div>
+                <p className="mt-3 max-w-[15rem] text-sm leading-relaxed text-[oklch(0.7_0.01_84)]">
+                  {s.d}
+                </p>
+              </div>
             </div>
           ))}
         </div>
