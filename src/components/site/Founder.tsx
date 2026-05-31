@@ -1,5 +1,5 @@
 import { ArrowRight } from "lucide-react";
-import { SITE } from "@/config";
+import { whatsappLink } from "@/config";
 
 export function Founder() {
   return (
@@ -51,7 +51,9 @@ export function Founder() {
           <p className="mt-7 font-display text-xl italic">— Robbie, Founder</p>
 
           <a
-            href={`mailto:${SITE.email}?subject=15-min%20demo`}
+            href={whatsappLink("Hoi Robbie! Ik wil graag een 15-min demo boeken.")}
+            target="_blank"
+            rel="noopener noreferrer"
             className="group mt-8 inline-flex items-center gap-2.5 border border-foreground px-7 py-3.5 font-mono text-xs uppercase tracking-[0.16em] text-foreground transition-all hover:bg-foreground hover:text-background"
           >
             Boek een 15-min demo

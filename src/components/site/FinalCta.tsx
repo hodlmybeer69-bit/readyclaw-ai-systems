@@ -1,5 +1,5 @@
 import { ArrowRight, MessageCircle } from "lucide-react";
-import { SITE, isWhatsAppConfigured, whatsappLink } from "@/config";
+import { isWhatsAppConfigured, whatsappLink } from "@/config";
 
 const WA_MESSAGE =
   "Hoi ReadyClaw! Ik heb interesse in een pre-configured AI-medewerker op Mac mini. Kunnen jullie me meer vertellen?";
@@ -64,13 +64,6 @@ export function FinalCta({ onOrder }: { onOrder: () => void }) {
               </a>
             )}
 
-            <a
-              href={`mailto:${SITE.email}`}
-              className="group inline-flex items-center justify-between gap-3 border border-[oklch(0.99_0.01_84/0.25)] px-7 py-4 font-mono text-xs uppercase tracking-[0.16em] text-[oklch(0.93_0.01_84)] transition-colors hover:border-accent hover:text-accent"
-            >
-              {SITE.email}
-              <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
-            </a>
           </div>
         </div>
       </div>

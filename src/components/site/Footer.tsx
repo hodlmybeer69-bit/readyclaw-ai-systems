@@ -1,4 +1,4 @@
-import { SITE } from "@/config";
+import { SITE, isWhatsAppConfigured, whatsappLink } from "@/config";
 
 export function Footer() {
   return (
@@ -31,14 +31,25 @@ export function Footer() {
             <div className="mono-label text-ink-soft">// Info</div>
             <ul className="mt-4 space-y-2.5 text-sm">
               <li><a href="#faq" className="link-underline">FAQ</a></li>
-              <li><a href={`mailto:${SITE.email}`} className="link-underline">Contact</a></li>
+              <li><a href="#packages" className="link-underline">Contact</a></li>
             </ul>
           </div>
 
           <div className="md:col-span-3">
             <div className="mono-label text-ink-soft">// Contact</div>
             <ul className="mt-4 space-y-2.5 text-sm">
-              <li><a href={`mailto:${SITE.email}`} className="link-underline">{SITE.email}</a></li>
+              {isWhatsAppConfigured && (
+                <li>
+                  <a
+                    href={whatsappLink("Hoi ReadyClaw! Ik heb een vraag.")}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="link-underline"
+                  >
+                    WhatsApp
+                  </a>
+                </li>
+              )}
               <li className="text-ink-soft">{SITE.country}</li>
             </ul>
           </div>

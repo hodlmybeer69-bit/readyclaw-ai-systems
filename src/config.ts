@@ -9,7 +9,6 @@
 export const SITE = {
   name: "ReadyClaw",
   origin: "https://readyclaw.vip",
-  email: "hi@readyclaw.com",
   country: "Nederland",
 } as const;
 

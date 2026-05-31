@@ -10,7 +10,6 @@ import {
 } from "@/components/ui/dialog";
 import type { TierId } from "@/App";
 import {
-  SITE,
   WEB3FORMS_ACCESS_KEY,
   isWeb3FormsConfigured,
   isWhatsAppConfigured,
@@ -71,7 +70,7 @@ export function OrderModal({
     }
 
     if (!isWeb3FormsConfigured) {
-      setError(`Bestellingen worden nog gekoppeld. Mail ons direct op ${SITE.email}.`);
+      setError("Bestellingen worden nog gekoppeld. Neem contact op via WhatsApp of het formulier hieronder.");
       return;
     }
 
@@ -99,7 +98,7 @@ export function OrderModal({
       setDone(true);
       form.reset();
     } catch {
-      setError(`Er ging iets mis. Probeer opnieuw of mail ${SITE.email}.`);
+      setError("Er ging iets mis. Probeer opnieuw of stuur ons een WhatsApp.");
     } finally {
       setSubmitting(false);
     }
