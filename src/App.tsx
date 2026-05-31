@@ -3,6 +3,7 @@ import { useReveal } from "@/hooks/useReveal";
 import { Nav } from "@/components/site/Nav";
 import { Hero } from "@/components/site/Hero";
 import { Marquee } from "@/components/site/Marquee";
+import { ProductBand } from "@/components/site/ProductBand";
 import { WhatItDoes } from "@/components/site/WhatItDoes";
 import { HowItWorks } from "@/components/site/HowItWorks";
 import { Packages } from "@/components/site/Packages";
@@ -26,6 +27,7 @@ export function App() {
       <main>
         <Hero onOrder={() => setTier("custom")} />
         <Marquee />
+        <ProductBand />
         <WhatItDoes />
         <HowItWorks />
         <Packages onOrder={setTier} />

@@ -17,7 +17,7 @@ export function Support() {
       <div className="mx-auto max-w-[1240px] px-6">
         <div className="reveal flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
           <div className="max-w-xl">
-            <p className="mono-label text-accent">// Support</p>
+            <p className="kicker-rule mono-label text-accent">Support</p>
             <h2 className="mt-5 font-display text-[clamp(2.4rem,5vw,4.5rem)] leading-[1.02] tracking-[-0.015em]">
               Optioneel. <span className="italic text-accent">Niet verplicht.</span>
             </h2>

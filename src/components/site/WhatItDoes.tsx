@@ -31,24 +31,42 @@ export function WhatItDoes() {
   return (
     <section id="what" className="border-t border-border py-24 md:py-32">
       <div className="mx-auto max-w-[1240px] px-6">
-        <div className="reveal max-w-4xl">
-          <p className="mono-label text-accent">// Wat je ReadyClaw doet</p>
-          <h2 className="mt-5 font-display text-[clamp(2.4rem,5vw,4.5rem)] leading-[1.02] tracking-[-0.015em]">
-            Drie skills die <span className="italic text-accent">90%</span> van de dagelijkse
-            wrijving wegnemen.
-          </h2>
+        {/* Photographic header: editorial heading + framed product still */}
+        <div className="grid items-center gap-12 md:grid-cols-[1.1fr_0.9fr]">
+          <div className="reveal">
+            <p className="kicker-rule mono-label text-accent">Wat je ReadyClaw doet</p>
+            <h2 className="mt-6 font-display text-[clamp(2.4rem,5vw,4.5rem)] leading-[1.02] tracking-[-0.015em]">
+              Drie skills die <span className="italic text-accent">90%</span> van de dagelijkse
+              wrijving wegnemen.
+            </h2>
+            <p className="mt-6 max-w-md text-lg leading-relaxed text-ink-soft">
+              Geen chatvenster waar je naartoe moet. Het werk gebeurt op de achtergrond, op je eigen
+              apparaat — en je ziet alleen het resultaat.
+            </p>
+          </div>
+
+          <div className="reveal img-frame img-zoom tick-corners aspect-[4/3] md:aspect-[5/4]">
+            <img
+              src="/img/macmini-topdown.jpg"
+              alt="Mac mini op een opgeruimd bureau, bovenaanzicht"
+              width={1400}
+              height={1120}
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
         </div>
 
-        <div className="mt-16 md:mt-20">
+        <div className="mt-16 md:mt-24">
           {BLOCKS.map((b) => {
             const Icon = b.icon;
             return (
               <div
                 key={b.n}
-                className="reveal grid gap-6 border-t border-border py-10 md:grid-cols-12 md:gap-10 md:py-14"
+                className="reveal group grid gap-6 border-t border-border py-10 transition-colors hover:bg-card md:grid-cols-12 md:gap-10 md:py-14"
               >
                 <div className="flex items-start gap-5 md:col-span-5">
-                  <div className="font-display text-5xl leading-none text-accent md:text-6xl">
+                  <div className="font-display text-5xl leading-none text-accent transition-transform group-hover:-translate-y-1 md:text-6xl">
                     {b.n}
                   </div>
                   <div>

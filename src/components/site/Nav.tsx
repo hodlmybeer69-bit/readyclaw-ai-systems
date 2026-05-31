@@ -20,6 +20,15 @@ export function Nav({ onOrder }: { onOrder: () => void }) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // At the very top the nav sits over the dark photographic hero → light text.
+  // Once scrolled it gets a paper bar with ink text.
+  const link = scrolled ? "text-ink-soft hover:text-foreground" : "text-[oklch(0.85_0.01_84)] hover:text-white";
+  const wordmark = scrolled ? "text-foreground" : "text-[oklch(0.97_0.01_84)]";
+  const orderBtn = scrolled
+    ? "bg-foreground text-background hover:bg-accent hover:text-accent-foreground"
+    : "bg-[oklch(0.97_0.01_84)] text-ink-deep hover:bg-accent hover:text-accent-foreground";
+  const burger = scrolled ? "text-foreground" : "text-[oklch(0.95_0.01_84)]";
+
   return (
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
@@ -29,7 +38,7 @@ export function Nav({ onOrder }: { onOrder: () => void }) {
       <div className="mx-auto flex h-16 max-w-[1240px] items-center justify-between px-6 md:h-[72px]">
         <a href="#top" className="flex items-center gap-2.5" aria-label="ReadyClaw home">
           <span className="h-2 w-2 rounded-full bg-accent dot-pulse" />
-          <span className="font-mono text-[13px] font-semibold uppercase tracking-[0.18em]">
+          <span className={`font-mono text-[13px] font-semibold uppercase tracking-[0.18em] ${wordmark}`}>
             Ready<span className="text-accent">Claw</span>
           </span>
         </a>
@@ -39,7 +48,7 @@ export function Nav({ onOrder }: { onOrder: () => void }) {
             <a
               key={l.href}
               href={l.href}
-              className="link-underline font-mono text-[11px] uppercase tracking-[0.16em] text-ink-soft transition-colors hover:text-foreground"
+              className={`link-underline font-mono text-[11px] uppercase tracking-[0.16em] transition-colors ${link}`}
             >
               {l.label}
             </a>
@@ -49,13 +58,13 @@ export function Nav({ onOrder }: { onOrder: () => void }) {
         <div className="flex items-center gap-3">
           <button
             onClick={onOrder}
-            className="hidden items-center gap-2 bg-foreground px-5 py-2.5 font-mono text-[11px] uppercase tracking-[0.16em] text-background transition-all hover:bg-accent hover:text-accent-foreground md:inline-flex"
+            className={`hidden items-center gap-2 px-5 py-2.5 font-mono text-[11px] uppercase tracking-[0.16em] transition-all md:inline-flex ${orderBtn}`}
           >
             Bestel <span aria-hidden>→</span>
           </button>
           <button
             onClick={() => setOpen((v) => !v)}
-            className="-mr-2 p-2 text-foreground md:hidden"
+            className={`-mr-2 p-2 md:hidden ${burger}`}
             aria-label="Menu"
             aria-expanded={open}
           >

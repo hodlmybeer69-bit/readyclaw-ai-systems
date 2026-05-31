@@ -73,7 +73,7 @@ export function Packages({ onOrder }: { onOrder: (tier: TierId) => void }) {
     <section id="packages" className="border-t border-border py-24 md:py-32">
       <div className="mx-auto max-w-[1240px] px-6">
         <div className="reveal max-w-3xl">
-          <p className="mono-label text-accent">// Pakketten</p>
+          <p className="kicker-rule mono-label text-accent">Pakketten</p>
           <h2 className="mt-5 font-display text-[clamp(2.4rem,5vw,4.5rem)] leading-[1.02] tracking-[-0.015em]">
             Drie tiers. <span className="italic">Eén belofte:</span> het werkt uit de doos.
           </h2>

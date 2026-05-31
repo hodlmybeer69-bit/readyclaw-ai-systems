@@ -16,7 +16,7 @@ export function Faq() {
     <section id="faq" className="border-t border-border py-24 md:py-32">
       <div className="mx-auto grid max-w-[1240px] gap-12 px-6 md:grid-cols-12">
         <div className="reveal md:col-span-4">
-          <p className="mono-label text-accent">// FAQ</p>
+          <p className="kicker-rule mono-label text-accent">FAQ</p>
           <h2 className="mt-5 font-display text-[clamp(2.4rem,5vw,4rem)] leading-[1.02] tracking-[-0.015em]">
             Vragen, <span className="italic text-accent">beantwoord.</span>
           </h2>

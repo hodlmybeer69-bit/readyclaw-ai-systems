@@ -5,25 +5,29 @@ export function Founder() {
   return (
     <section className="border-t border-border py-24 md:py-32">
       <div className="mx-auto grid max-w-[1240px] items-start gap-12 px-6 md:grid-cols-12">
-        {/* Monogram / signature tile */}
+        {/* Real product-in-hand photograph (warm, no faces) */}
         <div className="reveal md:col-span-4">
-          <div className="relative aspect-square bg-ink-deep">
-            <div className="absolute inset-0 glow-warm opacity-60" aria-hidden />
-            <div className="absolute inset-0 flex flex-col justify-between p-7">
-              <span className="mono-label text-[oklch(0.7_0.01_84)]">// Founder</span>
-              <span className="font-display text-[12rem] leading-[0.7] text-[oklch(0.97_0.01_84)]">
-                R<span className="text-accent">.</span>
-              </span>
-              <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-[oklch(0.72_0.01_84)]">
+          <div className="img-frame img-zoom tick-corners relative aspect-[4/5]">
+            <img
+              src="/img/founder-hand.jpg"
+              alt="De ReadyClaw Mac mini in de hand — klein genoeg om mee te nemen"
+              width={1400}
+              height={1750}
+              loading="lazy"
+              decoding="async"
+            />
+            <div className="absolute inset-x-0 bottom-0 z-[1] flex items-center justify-between bg-gradient-to-t from-ink-deep/85 to-transparent px-5 pb-4 pt-10">
+              <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-[oklch(0.9_0.01_84)]">
                 Robbie — ReadyClaw
               </span>
+              <span className="mono-label text-accent">Founder</span>
             </div>
           </div>
         </div>
 
         <div className="reveal md:col-span-8">
-          <p className="mono-label text-accent">// Van de oprichter</p>
-          <h2 className="mt-5 max-w-3xl font-display text-[clamp(1.9rem,3.6vw,3.2rem)] italic leading-[1.1] tracking-[-0.01em]">
+          <p className="kicker-rule mono-label text-accent">Van de oprichter</p>
+          <h2 className="mt-6 max-w-3xl font-display text-[clamp(1.9rem,3.6vw,3.2rem)] italic leading-[1.1] tracking-[-0.01em]">
             "I built this because I was tired of seeing smart people lose to AI."
           </h2>
 

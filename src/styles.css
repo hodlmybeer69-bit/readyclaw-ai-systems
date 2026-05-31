@@ -204,3 +204,94 @@
   transition: background-size 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .link-underline:hover { background-size: 100% 1px; }
+
+/* ── Photographic / depth system ─────────────────────────────────────────────
+   The visual-redesign-v2 look: full-bleed cinematic photography with a warm
+   ink wash so every image reads as part of one brand, layered depth, framed
+   product shots. Cohesion over decoration.
+*/
+
+/* Warm cinematic wash laid over a dark photo so headline text stays legible
+   and the image picks up the vermilion brand temperature. */
+.cine-wash {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 90% at 18% 50%, oklch(0.168 0.012 62 / 0.9) 0%, oklch(0.168 0.012 62 / 0.5) 42%, transparent 78%),
+    linear-gradient(180deg, oklch(0.168 0.012 62 / 0.55) 0%, transparent 28%, transparent 55%, oklch(0.143 0.012 62 / 0.85) 100%),
+    radial-gradient(90% 70% at 92% 14%, oklch(0.628 0.213 33 / 0.22), transparent 60%);
+}
+
+/* Lighter wash for product bands where the photo itself is the hero. */
+.cine-wash-soft {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, oklch(0.143 0.012 62 / 0.45) 0%, transparent 30%, transparent 60%, oklch(0.143 0.012 62 / 0.7) 100%);
+}
+
+/* Framed image: hairline edge + deep warm shadow, gives photos physical weight. */
+.img-frame {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  box-shadow:
+    0 1px 0 oklch(0.99 0.01 84 / 0.5) inset,
+    0 40px 80px -40px oklch(0.205 0.014 62 / 0.55),
+    0 12px 24px -16px oklch(0.205 0.014 62 / 0.4);
+}
+.img-frame img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+/* Subtle, slow zoom that breathes life into a still without distraction. */
+@keyframes ken-burns {
+  from { transform: scale(1.06); }
+  to { transform: scale(1.13); }
+}
+.ken {
+  animation: ken-burns 22s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+/* Image reveal on hover for product/founder shots. */
+.img-zoom img {
+  transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1), filter 0.9s ease;
+}
+.img-zoom:hover img { transform: scale(1.045); }
+
+/* Vertical kicker rule used in editorial section heads. */
+.kicker-rule {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.kicker-rule::before {
+  content: "";
+  width: 2.25rem;
+  height: 1px;
+  background: var(--vermilion);
+}
+
+/* Floating spec chip used over photography. */
+.spec-chip {
+  backdrop-filter: blur(10px);
+  background: oklch(0.168 0.012 62 / 0.55);
+  border: 1px solid oklch(0.99 0.01 84 / 0.16);
+}
+
+/* Hairline corner ticks — editorial detail on framed media. */
+.tick-corners::before,
+.tick-corners::after {
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border: 1px solid var(--vermilion);
+  z-index: 2;
+}
+.tick-corners::before { top: 14px; left: 14px; border-right: 0; border-bottom: 0; }
+.tick-corners::after { bottom: 14px; right: 14px; border-left: 0; border-top: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ken { animation: none; }
+}

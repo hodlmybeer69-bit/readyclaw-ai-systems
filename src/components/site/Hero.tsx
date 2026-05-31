@@ -7,32 +7,42 @@ const STATS = [
   { v: "3–6 mnd", l: "Leercurve die je overslaat" },
 ];
 
-const BOOT = [
-  "macOS — pre-configured",
-  "skills geïnstalleerd",
-  "accounts gekoppeld",
-  "getest & klaar",
-];
-
 export function Hero({ onOrder }: { onOrder: () => void }) {
   return (
-    <section id="top" className="relative overflow-hidden">
-      <div className="glow-warm absolute inset-0" aria-hidden />
-      <div className="relative mx-auto max-w-[1240px] px-6 pb-20 pt-32 md:pb-28 md:pt-44">
-        <div className="grid items-end gap-14 lg:grid-cols-[1.35fr_1fr]">
-          {/* Left — editorial headline */}
-          <div>
-            <p className="mono-label rise d-1 text-ink-soft">
-              Pre-configured · Mac mini · Lokaal of cloud
-            </p>
+    <section id="top" className="relative isolate overflow-hidden bg-ink-deep">
+      {/* Full-bleed cinematic photograph */}
+      <div className="absolute inset-0 -z-10">
+        <img
+          src="/img/hero-desk.jpg"
+          alt="Een werkplek bij nacht — een Mac die doorwerkt terwijl jij slaapt"
+          width={2400}
+          height={1500}
+          fetchPriority="high"
+          decoding="async"
+          className="ken h-full w-full object-cover"
+        />
+        <div className="cine-wash" aria-hidden />
+      </div>
 
-            <h1 className="rise d-2 mt-7 font-display text-[clamp(3.2rem,8vw,7.2rem)] leading-[0.94] tracking-[-0.02em]">
+      <div className="relative mx-auto max-w-[1240px] px-6 pb-16 pt-32 md:pb-24 md:pt-44">
+        {/* status chip — the "it's already running" signal as an overlay detail */}
+        <div className="rise d-1 mb-9 inline-flex items-center gap-3 spec-chip px-4 py-2">
+          <span className="h-1.5 w-1.5 rounded-full bg-accent dot-pulse" />
+          <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[oklch(0.92_0.01_84)]">
+            Pre-configured · Mac mini · Lokaal of cloud
+          </span>
+        </div>
+
+        <div className="grid items-end gap-12 lg:grid-cols-[1.5fr_1fr]">
+          {/* Headline column */}
+          <div className="max-w-3xl">
+            <h1 className="rise d-2 font-display text-[clamp(3.4rem,9vw,8rem)] leading-[0.92] tracking-[-0.02em] text-[oklch(0.985_0.01_84)]">
               Jouw AI-medewerker.
               <br />
               <span className="italic text-accent">Klaar.</span> Zonder gedoe.
             </h1>
 
-            <p className="rise d-3 mt-8 max-w-xl text-lg leading-relaxed text-ink-soft md:text-xl">
+            <p className="rise d-3 mt-8 max-w-xl text-lg leading-relaxed text-[oklch(0.84_0.01_84)] md:text-xl">
               Geen maandenlang uitvogelen. Geen experimenteren met API-kosten. Wij leveren een Mac
               mini met je AI-systeem er compleet op — lokaal of in de cloud. Binnen een paar uur ben
               je klaar om te werken.
@@ -41,73 +51,46 @@ export function Hero({ onOrder }: { onOrder: () => void }) {
             <div className="rise d-4 mt-10 flex flex-wrap items-center gap-3">
               <button
                 onClick={onOrder}
-                className="group inline-flex items-center gap-2.5 bg-accent px-7 py-3.5 font-mono text-xs uppercase tracking-[0.16em] text-accent-foreground transition-all hover:bg-foreground hover:text-background"
+                className="group inline-flex items-center gap-2.5 bg-accent px-7 py-3.5 font-mono text-xs uppercase tracking-[0.16em] text-accent-foreground transition-all hover:bg-[oklch(0.98_0.01_84)] hover:text-ink-deep"
               >
                 Kies je pakket
                 <ArrowRight size={15} className="transition-transform group-hover:translate-x-1" />
               </button>
               <a
                 href="#how"
-                className="inline-flex items-center gap-2.5 border border-line-strong px-7 py-3.5 font-mono text-xs uppercase tracking-[0.16em] text-foreground transition-colors hover:border-foreground"
+                className="inline-flex items-center gap-2.5 border border-[oklch(0.99_0.01_84/0.3)] px-7 py-3.5 font-mono text-xs uppercase tracking-[0.16em] text-[oklch(0.95_0.01_84)] backdrop-blur-sm transition-colors hover:border-accent hover:text-accent"
               >
                 Zo werkt het
               </a>
             </div>
           </div>
 
-          {/* Right — device / boot panel */}
-          <div className="rise d-5 relative">
-            <div className="relative mx-auto max-w-sm">
-              {/* the slab */}
-              <div className="relative rounded-md bg-ink-deep p-6 shadow-[0_30px_60px_-20px_oklch(0.2_0.014_62/0.45)]">
-                <div className="flex items-center justify-between">
-                  <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[oklch(0.72_0.01_84)]">
-                    readyclaw://boot
-                  </span>
-                  <span className="flex items-center gap-1.5">
-                    <span className="h-1.5 w-1.5 rounded-full bg-accent dot-pulse" />
-                    <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-accent">
-                      online
-                    </span>
-                  </span>
-                </div>
-                <div className="mt-5 space-y-2.5">
-                  {BOOT.map((line, i) => (
-                    <div key={i} className="flex items-center gap-3 font-mono text-[13px] text-[oklch(0.82_0.01_84)]">
-                      <span className="text-accent">✓</span>
-                      <span>{line}</span>
-                    </div>
-                  ))}
-                </div>
-                <div className="mt-6 border-t border-[oklch(0.99_0.01_84/0.1)] pt-5">
-                  <div className="font-display text-3xl italic text-[oklch(0.97_0.01_84)]">
-                    "Goedemorgen. 3 dingen vragen aandacht."
-                  </div>
-                  <div className="mt-2 font-mono text-[10px] uppercase tracking-[0.16em] text-[oklch(0.62_0.01_84)]">
-                    — je ochtendbriefing, automatisch
-                  </div>
-                </div>
-              </div>
-              {/* plinth shadow */}
-              <div className="mx-auto mt-1 h-2 w-[82%] rounded-full bg-foreground/10 blur-md" aria-hidden />
-              <div className="mt-4 text-center font-mono text-[10px] uppercase tracking-[0.2em] text-ink-soft">
-                Mac mini M4 · jouw apparaat, voorgeladen
-              </div>
+          {/* Overheard line — sits low-right on the photo */}
+          <div className="rise d-5 hidden lg:block">
+            <div className="border-l border-[oklch(0.99_0.01_84/0.25)] pl-6">
+              <p className="font-display text-2xl italic leading-snug text-[oklch(0.95_0.01_84)]">
+                “Goedemorgen. 3 dingen vragen aandacht.”
+              </p>
+              <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.18em] text-[oklch(0.66_0.01_84)]">
+                — je ochtendbriefing, automatisch · Mac mini M4
+              </p>
             </div>
           </div>
         </div>
 
-        {/* Stats hairline grid */}
-        <div className="rise d-6 mt-20 grid grid-cols-2 border-t border-line-strong md:grid-cols-4">
+        {/* Stats — hairline grid on the dark wash */}
+        <div className="rise d-6 mt-16 grid grid-cols-2 border-t border-[oklch(0.99_0.01_84/0.18)] md:mt-20 md:grid-cols-4">
           {STATS.map((s, i) => (
             <div
               key={i}
-              className={`px-1 py-6 md:px-6 ${i !== 0 ? "md:border-l md:border-border" : ""} ${
-                i < 2 ? "border-b border-border md:border-b-0" : ""
-              } ${i === 1 ? "border-l border-border md:border-l" : ""} ${i === 3 ? "border-l border-border md:border-l" : ""}`}
+              className={`px-1 py-6 md:px-6 ${i !== 0 ? "md:border-l md:border-[oklch(0.99_0.01_84/0.14)]" : ""} ${
+                i < 2 ? "border-b border-[oklch(0.99_0.01_84/0.14)] md:border-b-0" : ""
+              } ${i === 1 || i === 3 ? "border-l border-[oklch(0.99_0.01_84/0.14)]" : ""}`}
             >
-              <div className="font-display text-3xl md:text-4xl">{s.v}</div>
-              <div className="mono-label mt-2 text-ink-soft">{s.l}</div>
+              <div className="font-display text-3xl text-[oklch(0.98_0.01_84)] md:text-4xl">
+                {s.v}
+              </div>
+              <div className="mono-label mt-2 text-[oklch(0.66_0.01_84)]">{s.l}</div>
             </div>
           ))}
         </div>

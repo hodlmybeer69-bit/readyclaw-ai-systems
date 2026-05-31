@@ -11,7 +11,7 @@ export function HowItWorks() {
       <div className="mx-auto max-w-[1240px] px-6">
         <div className="reveal flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div className="max-w-3xl">
-            <p className="mono-label text-accent">// Hoe het werkt</p>
+            <p className="kicker-rule mono-label text-accent">Hoe het werkt</p>
             <h2 className="mt-5 font-display text-[clamp(2.4rem,5vw,4.5rem)] leading-[1.02] tracking-[-0.015em] text-[oklch(0.97_0.01_84)]">
               Van bestelling naar <span className="italic text-accent">werkende AI</span> in 5
               dagen.

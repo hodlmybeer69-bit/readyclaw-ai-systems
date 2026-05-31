@@ -6,11 +6,32 @@ const WA_MESSAGE =
 
 export function FinalCta({ onOrder }: { onOrder: () => void }) {
   return (
-    <section className="bg-ink-deep py-24 text-[oklch(0.93_0.01_84)] md:py-32">
+    <section className="relative isolate overflow-hidden bg-ink-deep py-24 text-[oklch(0.93_0.01_84)] md:py-32">
+      {/* atmospheric product photo, washed into the dark close */}
+      <div className="absolute inset-0 -z-10">
+        <img
+          src="/img/product-macmini.jpg"
+          alt=""
+          aria-hidden="true"
+          width={1800}
+          height={1200}
+          loading="lazy"
+          decoding="async"
+          className="h-full w-full object-cover opacity-40"
+        />
+        <div
+          className="absolute inset-0"
+          aria-hidden
+          style={{
+            background:
+              "linear-gradient(90deg, oklch(0.143 0.012 62) 12%, oklch(0.143 0.012 62 / 0.7) 55%, oklch(0.143 0.012 62 / 0.45) 100%)",
+          }}
+        />
+      </div>
       <div className="mx-auto max-w-[1240px] px-6">
         <div className="reveal grid items-center gap-12 md:grid-cols-12">
           <div className="md:col-span-7">
-            <p className="mono-label text-accent">// Klaar om te beginnen?</p>
+            <p className="kicker-rule mono-label text-accent">Klaar om te beginnen?</p>
             <h2 className="mt-5 font-display text-[clamp(2.6rem,6vw,5.5rem)] leading-[0.98] tracking-[-0.02em] text-[oklch(0.98_0.01_84)]">
               Plug in. Log in. <span className="italic text-accent">Klaar.</span>
             </h2>
