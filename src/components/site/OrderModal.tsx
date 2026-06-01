@@ -1,31 +1,44 @@
 import { useState } from "react";
 import { z } from "zod";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { supabase } from "@/integrations/supabase/client";
-import { Check, Loader2 } from "lucide-react";
+import { Check, Loader2, MessageCircle } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import type { TierId } from "@/App";
+import {
+  WEB3FORMS_ACCESS_KEY,
+  isWeb3FormsConfigured,
+  isWhatsAppConfigured,
+  whatsappLink,
+} from "@/config";
+import { useI18n } from "@/i18n/I18nProvider";
+import type { Dictionary } from "@/i18n/types";
 
-const schema = z.object({
-  name: z.string().trim().min(1, "Naam is verplicht").max(100),
-  email: z.string().trim().email("Ongeldig e-mailadres").max(255),
-  phone: z.string().trim().max(40).optional().or(z.literal("")),
-  has_mac: z.string().max(40),
-  mode: z.string().max(40),
-  notes: z.string().max(2000).optional().or(z.literal("")),
-});
-
-const tierLabels: Record<string, string> = {
-  basic: "Basic — €899",
-  custom: "Custom — vanaf €1.199",
-  jarvis: "Jarvis — €2.499",
-};
+/** Build the validation schema with localized messages (logic unchanged). */
+function makeSchema(t: Dictionary) {
+  return z.object({
+    name: z.string().trim().min(1, t.order.errors.nameRequired).max(100),
+    email: z.string().trim().email(t.order.errors.emailInvalid).max(255),
+    phone: z.string().trim().max(40).optional().or(z.literal("")),
+    has_mac: z.string().max(40),
+    mode: z.string().max(40),
+    notes: z.string().max(2000).optional().or(z.literal("")),
+  });
+}
 
 export function OrderModal({
   tier,
   onOpenChange,
 }: {
-  tier: "basic" | "custom" | "jarvis" | null;
+  tier: TierId | null;
   onOpenChange: (open: boolean) => void;
 }) {
+  const { t } = useI18n();
+  const o = t.order;
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -34,8 +47,17 @@ export function OrderModal({
     e.preventDefault();
     if (!tier) return;
     setError(null);
-    const fd = new FormData(e.currentTarget);
-    const parsed = schema.safeParse({
+
+    const form = e.currentTarget;
+    const fd = new FormData(form);
+
+    // Honeypot: real users never fill this hidden field.
+    if ((fd.get("company_website") as string)?.trim()) {
+      setDone(true);
+      return;
+    }
+
+    const parsed = makeSchema(t).safeParse({
       name: fd.get("name"),
       email: fd.get("email"),
       phone: fd.get("phone") || "",
@@ -44,25 +66,45 @@ export function OrderModal({
       notes: fd.get("notes") || "",
     });
     if (!parsed.success) {
-      setError(parsed.error.issues[0]?.message ?? "Validatiefout");
+      setError(parsed.error.issues[0]?.message ?? o.errors.validation);
       return;
     }
+
+    if (!isWeb3FormsConfigured) {
+      setError(o.errors.notConfigured);
+      return;
+    }
+
     setSubmitting(true);
-    const { error: insertErr } = await supabase.from("orders").insert({
-      tier,
-      name: parsed.data.name,
-      email: parsed.data.email,
-      phone: parsed.data.phone || null,
-      has_mac: parsed.data.has_mac,
-      mode: parsed.data.mode,
-      notes: parsed.data.notes || null,
-    });
-    setSubmitting(false);
-    if (insertErr) {
-      setError("Er ging iets mis. Probeer opnieuw of mail hi@readyclaw.com");
-      return;
+    try {
+      // Payload field-keys are kept constant (the Web3Forms integration); only
+      // the human-readable subject and tier label are localized.
+      const payload = {
+        access_key: WEB3FORMS_ACCESS_KEY,
+        subject: `${o.emailSubjectPrefix}${o.tierLabels[tier]}`,
+        from_name: "ReadyClaw website",
+        tier: o.tierLabels[tier],
+        naam: parsed.data.name,
+        email: parsed.data.email,
+        telefoon: parsed.data.phone || "—",
+        heeft_mac_mini: parsed.data.has_mac,
+        modus: parsed.data.mode,
+        notities: parsed.data.notes || "—",
+      };
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      if (!data.success) throw new Error(data.message || o.errors.unknown);
+      setDone(true);
+      form.reset();
+    } catch {
+      setError(o.errors.generic);
+    } finally {
+      setSubmitting(false);
     }
-    setDone(true);
   }
 
   function close(open: boolean) {
@@ -75,63 +117,77 @@ export function OrderModal({
 
   return (
     <Dialog open={!!tier} onOpenChange={close}>
-      <DialogContent className="bg-background border-border max-w-lg">
+      <DialogContent className="max-w-lg border-border bg-background">
         <DialogHeader>
-          <DialogTitle className="font-display text-2xl">
-            {done ? "Bestelling ontvangen" : "Bestel " + (tier ? tierLabels[tier] : "")}
+          <DialogTitle className="font-display text-3xl tracking-[-0.01em]">
+            {done ? o.doneTitle : `${o.titlePrefix}${tier ? o.tierLabels[tier] : ""}`}
           </DialogTitle>
-          <DialogDescription className="text-muted-foreground">
-            {done
-              ? "We nemen binnen 24u contact op."
-              : "Vul je gegevens in. Geen verplichting — we mailen eerst."}
+          <DialogDescription className="text-ink-soft">
+            {done ? o.doneDescription : o.formDescription}
           </DialogDescription>
         </DialogHeader>
 
         {done ? (
-          <div className="py-6 flex flex-col items-center gap-4 text-center">
-            <div className="w-12 h-12 bg-accent text-primary-foreground flex items-center justify-center">
+          <div className="flex flex-col items-center gap-4 py-8 text-center">
+            <div className="flex h-12 w-12 items-center justify-center bg-accent text-accent-foreground">
               <Check />
             </div>
-            <p className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
-              Check je inbox voor bevestiging
-            </p>
+            <p className="mono-label text-ink-soft">{o.doneHint}</p>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <Field label="Naam" name="name" required />
-            <Field label="Email" name="email" type="email" required />
-            <Field label="Telefoon (optioneel)" name="phone" />
-            <Select label="Heb je al een Mac mini?" name="has_mac" options={[
-              { v: "no", l: "Nee" },
-              { v: "yes_remote", l: "Ja, alleen remote setup" },
-              { v: "unsure", l: "Weet ik niet" },
-            ]} />
-            <Select label="Lokaal of cloud?" name="mode" options={[
-              { v: "local", l: "Lokaal" },
-              { v: "cloud", l: "Cloud" },
-              { v: "hybrid", l: "Hybride" },
-              { v: "unsure", l: "Weet ik niet" },
-            ]} />
+          <form onSubmit={handleSubmit} className="space-y-4" action="https://api.web3forms.com/submit">
+            {/* honeypot — hidden from humans */}
+            <input
+              type="text"
+              name="company_website"
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden="true"
+              className="absolute left-[-9999px] h-0 w-0 opacity-0"
+            />
+
+            <Field label={o.fieldName} name="name" required />
+            <Field label={o.fieldEmail} name="email" type="email" required />
+            <Field label={o.fieldPhone} name="phone" />
+            <Select label={o.fieldHasMac} name="has_mac" options={o.hasMacOptions} />
+            <Select label={o.fieldMode} name="mode" options={o.modeOptions} />
             <div>
-              <label className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
-                Notities
-              </label>
+              <label className="mono-label text-ink-soft">{o.fieldNotes}</label>
               <textarea
                 name="notes"
                 rows={3}
-                className="mt-1 w-full bg-secondary border border-border px-3 py-2 text-sm focus:outline-none focus:border-accent"
+                className="mt-1.5 w-full border border-input bg-secondary px-3 py-2 text-sm outline-none focus:border-accent"
               />
             </div>
-            {error && (
-              <p className="text-sm text-destructive font-mono">{error}</p>
-            )}
+
+            {error && <p className="font-mono text-sm text-destructive">{error}</p>}
+
             <button
               type="submit"
               disabled={submitting}
-              className="w-full bg-accent text-primary-foreground py-3 font-mono text-xs uppercase tracking-wider hover:opacity-90 disabled:opacity-60 inline-flex items-center justify-center gap-2"
+              className="inline-flex w-full items-center justify-center gap-2 bg-accent py-3.5 font-mono text-xs uppercase tracking-[0.16em] text-accent-foreground transition-colors hover:bg-foreground hover:text-background disabled:opacity-60"
             >
-              {submitting ? <><Loader2 size={14} className="animate-spin" /> Bezig…</> : "Verstuur bestelling →"}
+              {submitting ? (
+                <>
+                  <Loader2 size={14} className="animate-spin" /> {o.submitting}
+                </>
+              ) : (
+                o.submit
+              )}
             </button>
+
+            {isWhatsAppConfigured && (
+              <a
+                href={whatsappLink(
+                  `${o.waMessagePrefix}${tier ? o.tierLabels[tier] : o.waMessageFallback}${o.waMessageSuffix}`,
+                )}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex w-full items-center justify-center gap-2 border border-input py-3 font-mono text-xs uppercase tracking-[0.16em] text-foreground transition-colors hover:border-accent hover:text-accent"
+              >
+                <MessageCircle size={14} /> {o.whatsAppCta}
+              </a>
+            )}
           </form>
         )}
       </DialogContent>
@@ -139,35 +195,51 @@ export function OrderModal({
   );
 }
 
-function Field({ label, name, type = "text", required }: { label: string; name: string; type?: string; required?: boolean }) {
+function Field({
+  label,
+  name,
+  type = "text",
+  required,
+}: {
+  label: string;
+  name: string;
+  type?: string;
+  required?: boolean;
+}) {
   return (
     <div>
-      <label className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
-        {label}
-      </label>
+      <label className="mono-label text-ink-soft">{label}</label>
       <input
         name={name}
         type={type}
         required={required}
-        className="mt-1 w-full bg-secondary border border-border px-3 py-2 text-sm focus:outline-none focus:border-accent"
+        className="mt-1.5 w-full border border-input bg-secondary px-3 py-2 text-sm outline-none focus:border-accent"
       />
     </div>
   );
 }
 
-function Select({ label, name, options }: { label: string; name: string; options: { v: string; l: string }[] }) {
+function Select({
+  label,
+  name,
+  options,
+}: {
+  label: string;
+  name: string;
+  options: { v: string; l: string }[];
+}) {
   return (
     <div>
-      <label className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
-        {label}
-      </label>
+      <label className="mono-label text-ink-soft">{label}</label>
       <select
         name={name}
         defaultValue={options[0].v}
-        className="mt-1 w-full bg-secondary border border-border px-3 py-2 text-sm focus:outline-none focus:border-accent"
+        className="mt-1.5 w-full border border-input bg-secondary px-3 py-2 text-sm outline-none focus:border-accent"
       >
-        {options.map((o) => (
-          <option key={o.v} value={o.v}>{o.l}</option>
+        {options.map((opt) => (
+          <option key={opt.v} value={opt.v}>
+            {opt.l}
+          </option>
         ))}
       </select>
     </div>

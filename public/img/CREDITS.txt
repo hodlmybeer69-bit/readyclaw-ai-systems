@@ -1,0 +1,9 @@
+ReadyClaw site photography — Unsplash License (free for commercial use, no attribution required).
+Credits kept here as good practice.
+
+hero-desk.jpg          https://unsplash.com/photos/photo-1779444480529-7df3c5645991  (warm night desk / MacBook)
+product-macmini.jpg    https://unsplash.com/photos/photo-1758857087569-83791ac9edd5  (Mac mini between displays)
+macmini-topdown.jpg    https://unsplash.com/photos/photo-1735810501840-a57483d6dc0f  (Mac mini, top-down on desk)
+founder-hand.jpg       https://unsplash.com/photos/photo-1760597371592-09e901b7317d  (Mac mini held in hand)
+
+No AI-generated imagery. No identifiable faces.

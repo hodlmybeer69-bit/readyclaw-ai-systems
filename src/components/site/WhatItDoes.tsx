@@ -1,60 +1,72 @@
-import { Mail, Calendar, FileSearch } from "lucide-react";
+import { Mail, CalendarClock, FileSearch } from "lucide-react";
+import { useI18n } from "@/i18n/I18nProvider";
 
-const blocks = [
-  {
-    icon: Mail,
-    label: "Email triage",
-    title: "Wake up to a sorted inbox.",
-    body: "Your AI reads every email overnight, ranks priority, summarizes the rest, and drafts replies for routine messages. You wake up to a 3-minute briefing instead of a 90-minute mess.",
-    bullets: ["Top 3 priorities surfaced", "Routine replies pre-drafted", "Noise auto-archived with audit log"],
-  },
-  {
-    icon: Calendar,
-    label: "Calendar prep",
-    title: "Walk into every meeting prepared.",
-    body: "15 minutes before each external meeting, your AI delivers a briefing: company info, recent emails with attendees, prep notes, suggested opening question.",
-    bullets: ["Auto-research on external attendees", "Recent communication threaded in", "Specific prep based on meeting type"],
-  },
-  {
-    icon: FileSearch,
-    label: "Document Q&A",
-    title: "Ask your files anything.",
-    body: "Connect Drive, Dropbox, OneDrive, or local folders. Then ask in plain language: 'What does the Acme contract say about cancellation?' Answer in 2 seconds with source.",
-    bullets: ["Works on PDFs, Word, Pages, plain text", "Cited answers with direct links", "Local indexing on Jarvis tier"],
-  },
-];
+// Icons stay in the component (structural), paired with the dictionary blocks by index.
+const ICONS = [Mail, CalendarClock, FileSearch];
 
 export function WhatItDoes() {
-  return (
-    <section className="py-24 md:py-32 px-6 border-b border-border">
-      <div className="max-w-7xl mx-auto">
-        <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent">// What your ReadyClaw does</p>
-        <h2 className="mt-4 font-display text-4xl md:text-6xl font-medium tracking-tight max-w-4xl">
-          Three skills that cover <em className="italic font-normal">90%</em> of daily friction.
-        </h2>
+  const { t } = useI18n();
+  const w = t.what;
 
-        <div className="mt-16 space-y-px bg-border border border-border">
-          {blocks.map((b, i) => {
-            const Icon = b.icon;
+  return (
+    <section id="what" className="border-t border-border py-24 md:py-32">
+      <div className="mx-auto max-w-[1240px] px-6">
+        {/* Photographic header: editorial heading + framed product still */}
+        <div className="grid items-center gap-12 md:grid-cols-[1.1fr_0.9fr]">
+          <div className="reveal">
+            <p className="kicker-rule mono-label text-accent">{w.kicker}</p>
+            <h2 className="mt-6 font-display text-[clamp(2.4rem,5vw,4.5rem)] leading-[1.02] tracking-[-0.015em]">
+              {w.headline.before}
+              <span className="italic text-accent">{w.headline.emphasis}</span>
+              {w.headline.after}
+            </h2>
+            <p className="mt-6 max-w-md text-lg leading-relaxed text-ink-soft">
+              {w.body}
+            </p>
+          </div>
+
+          <div className="reveal img-frame img-zoom tick-corners aspect-[4/3] md:aspect-[5/4]">
+            <img
+              src="/img/macmini-topdown.jpg"
+              alt={w.imgAlt}
+              width={1400}
+              height={1120}
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+        </div>
+
+        <div className="mt-16 md:mt-24">
+          {w.blocks.map((b, idx) => {
+            const Icon = ICONS[idx] ?? Mail;
             return (
-              <div key={i} className="bg-background p-8 md:p-12 grid md:grid-cols-12 gap-8">
-                <div className="md:col-span-1">
-                  <div className="w-12 h-12 border border-accent text-accent flex items-center justify-center">
-                    <Icon size={20} />
+              <div
+                key={b.n}
+                className="reveal group grid gap-6 border-t border-border py-10 transition-colors hover:bg-card md:grid-cols-12 md:gap-10 md:py-14"
+              >
+                <div className="flex items-start gap-5 md:col-span-5">
+                  <div className="font-display text-5xl leading-none text-accent transition-transform group-hover:-translate-y-1 md:text-6xl">
+                    {b.n}
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2.5 text-foreground">
+                      <Icon size={16} className="text-accent" />
+                      <span className="mono-label text-ink-soft">{b.label}</span>
+                    </div>
+                    <h3 className="mt-3 font-display text-3xl leading-tight tracking-[-0.01em] md:text-4xl">
+                      {b.title}
+                    </h3>
                   </div>
                 </div>
-                <div className="md:col-span-7">
-                  <div className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
-                    {b.label}
-                  </div>
-                  <h3 className="mt-2 font-display text-3xl md:text-4xl tracking-tight">{b.title}</h3>
-                  <p className="mt-4 text-muted-foreground leading-relaxed max-w-2xl">{b.body}</p>
-                </div>
-                <ul className="md:col-span-4 space-y-3 md:border-l md:border-border md:pl-8">
-                  {b.bullets.map((bu, j) => (
-                    <li key={j} className="flex gap-3 text-sm">
-                      <span className="text-accent font-mono">+</span>
-                      <span className="text-foreground/90">{bu}</span>
+
+                <p className="text-base leading-relaxed text-ink-soft md:col-span-4">{b.body}</p>
+
+                <ul className="space-y-3 md:col-span-3 md:border-l md:border-border md:pl-8">
+                  {b.bullets.map((bu, i) => (
+                    <li key={i} className="flex gap-3 text-sm leading-snug">
+                      <span className="font-mono text-accent">+</span>
+                      <span className="text-foreground/85">{bu}</span>
                     </li>
                   ))}
                 </ul>
