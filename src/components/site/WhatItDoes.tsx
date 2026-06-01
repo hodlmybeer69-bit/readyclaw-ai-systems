@@ -1,54 +1,34 @@
 import { Mail, CalendarClock, FileSearch } from "lucide-react";
+import { useI18n } from "@/i18n/I18nProvider";
 
-const BLOCKS = [
-  {
-    n: "01",
-    icon: Mail,
-    label: "Email triage",
-    title: "Word wakker met een gesorteerde inbox.",
-    body: "Je AI leest 's nachts elke email, rangschikt op prioriteit, vat de rest samen en schrijft concept-antwoorden voor routineberichten. Je wordt wakker met een briefing van 3 minuten in plaats van een puinhoop van 90.",
-    bullets: ["Top 3 prioriteiten naar boven", "Routine-antwoorden voorgeschreven", "Ruis automatisch gearchiveerd met audit-log"],
-  },
-  {
-    n: "02",
-    icon: CalendarClock,
-    label: "Agenda-prep",
-    title: "Loop elke meeting voorbereid binnen.",
-    body: "15 minuten voor elke externe meeting levert je AI een briefing: bedrijfsinfo, recente mails met de deelnemers, prep-notities en een voorgestelde openingsvraag.",
-    bullets: ["Auto-research op externe deelnemers", "Recente communicatie meegenomen", "Specifieke prep per type meeting"],
-  },
-  {
-    n: "03",
-    icon: FileSearch,
-    label: "Document Q&A",
-    title: "Vraag je bestanden alles.",
-    body: "Koppel Drive, Dropbox, OneDrive of lokale mappen. Vraag dan in gewone taal: 'Wat zegt het Acme-contract over opzegging?' Antwoord in 2 seconden, met bron.",
-    bullets: ["Werkt op PDF, Word, Pages, platte tekst", "Antwoorden met bron en directe link", "Lokale indexering op de Jarvis-tier"],
-  },
-];
+// Icons stay in the component (structural), paired with the dictionary blocks by index.
+const ICONS = [Mail, CalendarClock, FileSearch];
 
 export function WhatItDoes() {
+  const { t } = useI18n();
+  const w = t.what;
+
   return (
     <section id="what" className="border-t border-border py-24 md:py-32">
       <div className="mx-auto max-w-[1240px] px-6">
         {/* Photographic header: editorial heading + framed product still */}
         <div className="grid items-center gap-12 md:grid-cols-[1.1fr_0.9fr]">
           <div className="reveal">
-            <p className="kicker-rule mono-label text-accent">Wat je ReadyClaw doet</p>
+            <p className="kicker-rule mono-label text-accent">{w.kicker}</p>
             <h2 className="mt-6 font-display text-[clamp(2.4rem,5vw,4.5rem)] leading-[1.02] tracking-[-0.015em]">
-              Drie skills die <span className="italic text-accent">90%</span> van de dagelijkse
-              wrijving wegnemen.
+              {w.headline.before}
+              <span className="italic text-accent">{w.headline.emphasis}</span>
+              {w.headline.after}
             </h2>
             <p className="mt-6 max-w-md text-lg leading-relaxed text-ink-soft">
-              Geen chatvenster waar je naartoe moet. Het werk gebeurt op de achtergrond, op je eigen
-              apparaat — en je ziet alleen het resultaat.
+              {w.body}
             </p>
           </div>
 
           <div className="reveal img-frame img-zoom tick-corners aspect-[4/3] md:aspect-[5/4]">
             <img
               src="/img/macmini-topdown.jpg"
-              alt="Mac mini op een opgeruimd bureau, bovenaanzicht"
+              alt={w.imgAlt}
               width={1400}
               height={1120}
               loading="lazy"
@@ -58,8 +38,8 @@ export function WhatItDoes() {
         </div>
 
         <div className="mt-16 md:mt-24">
-          {BLOCKS.map((b) => {
-            const Icon = b.icon;
+          {w.blocks.map((b, idx) => {
+            const Icon = ICONS[idx] ?? Mail;
             return (
               <div
                 key={b.n}

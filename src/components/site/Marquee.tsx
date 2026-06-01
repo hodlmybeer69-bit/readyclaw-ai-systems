@@ -1,18 +1,9 @@
-const ITEMS = [
-  "Geen abonnement",
-  "30 dagen geld-terug",
-  "Lifetime hardware-eigendom",
-  "100% lokaal op Jarvis",
-  "AVG-defendable",
-  "Geen vendor lock-in",
-  "30-min onboarding",
-  "Geen leercurve",
-];
+import { useI18n } from "@/i18n/I18nProvider";
 
-function Row() {
+function Row({ items }: { items: string[] }) {
   return (
     <div className="marquee-track">
-      {ITEMS.map((t, i) => (
+      {items.map((t, i) => (
         <span key={i} className="flex items-center">
           <span className="px-6 font-mono text-[11px] uppercase tracking-[0.2em] text-background/85">
             {t}
@@ -25,11 +16,12 @@ function Row() {
 }
 
 export function Marquee() {
+  const { t } = useI18n();
   return (
     <div className="overflow-hidden border-y border-foreground bg-foreground py-3.5">
       <div className="flex">
-        <Row />
-        <Row />
+        <Row items={t.marquee} />
+        <Row items={t.marquee} />
       </div>
     </div>
   );

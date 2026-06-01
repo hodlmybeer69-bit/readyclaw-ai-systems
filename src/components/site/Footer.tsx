@@ -1,6 +1,10 @@
-import { SITE, isWhatsAppConfigured, whatsappLink } from "@/config";
+import { isWhatsAppConfigured, whatsappLink } from "@/config";
+import { useI18n } from "@/i18n/I18nProvider";
 
 export function Footer() {
+  const { t } = useI18n();
+  const f = t.footer;
+
   return (
     <footer className="border-t border-border py-16">
       <div className="mx-auto max-w-[1240px] px-6">
@@ -13,53 +17,61 @@ export function Footer() {
               </span>
             </div>
             <p className="mt-4 max-w-xs font-display text-2xl italic leading-snug">
-              AI-medewerker, kant-en-klaar.
+              {f.tagline}
             </p>
           </div>
 
           <div className="md:col-span-2">
-            <div className="mono-label text-ink-soft">// Product</div>
+            <div className="mono-label text-ink-soft">// {f.productHeading}</div>
             <ul className="mt-4 space-y-2.5 text-sm">
-              <li><a href="#what" className="link-underline">Wat het doet</a></li>
-              <li><a href="#packages" className="link-underline">Pakketten</a></li>
-              <li><a href="#how" className="link-underline">Hoe het werkt</a></li>
-              <li><a href="#support" className="link-underline">Support</a></li>
+              {f.productLinks.map((l) => (
+                <li key={l.href}>
+                  <a href={l.href} className="link-underline">
+                    {l.label}
+                  </a>
+                </li>
+              ))}
             </ul>
           </div>
 
           <div className="md:col-span-2">
-            <div className="mono-label text-ink-soft">// Info</div>
+            <div className="mono-label text-ink-soft">// {f.infoHeading}</div>
             <ul className="mt-4 space-y-2.5 text-sm">
-              <li><a href="#faq" className="link-underline">FAQ</a></li>
-              <li><a href="#packages" className="link-underline">Contact</a></li>
+              {f.infoLinks.map((l) => (
+                <li key={l.label}>
+                  <a href={l.href} className="link-underline">
+                    {l.label}
+                  </a>
+                </li>
+              ))}
             </ul>
           </div>
 
           <div className="md:col-span-3">
-            <div className="mono-label text-ink-soft">// Contact</div>
+            <div className="mono-label text-ink-soft">// {f.contactHeading}</div>
             <ul className="mt-4 space-y-2.5 text-sm">
               {isWhatsAppConfigured && (
                 <li>
                   <a
-                    href={whatsappLink("Hoi ReadyClaw! Ik heb een vraag.")}
+                    href={whatsappLink(f.waMessage)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="link-underline"
                   >
-                    WhatsApp
+                    {f.whatsApp}
                   </a>
                 </li>
               )}
-              <li className="text-ink-soft">{SITE.country}</li>
+              <li className="text-ink-soft">{f.country}</li>
             </ul>
           </div>
         </div>
 
         <div className="mt-14 flex flex-col gap-3 border-t border-border pt-6 font-mono text-[11px] uppercase tracking-[0.16em] text-ink-soft md:flex-row md:items-center md:justify-between">
-          <div>© 2026 ReadyClaw</div>
+          <div>{f.copyright}</div>
           <div className="flex items-center gap-2">
             <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-            Plug in. Log in. Klaar.
+            {f.closer}
           </div>
         </div>
       </div>

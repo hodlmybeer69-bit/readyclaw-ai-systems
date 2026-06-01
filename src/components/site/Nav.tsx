@@ -1,15 +1,10 @@
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
-
-const LINKS = [
-  { href: "#what", label: "Wat het doet" },
-  { href: "#how", label: "Hoe het werkt" },
-  { href: "#packages", label: "Pakketten" },
-  { href: "#support", label: "Support" },
-  { href: "#faq", label: "FAQ" },
-];
+import { useI18n } from "@/i18n/I18nProvider";
+import { LanguageSwitcher } from "./LanguageSwitcher";
 
 export function Nav({ onOrder }: { onOrder: () => void }) {
+  const { t } = useI18n();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -36,7 +31,7 @@ export function Nav({ onOrder }: { onOrder: () => void }) {
       }`}
     >
       <div className="mx-auto flex h-16 max-w-[1240px] items-center justify-between px-6 md:h-[72px]">
-        <a href="#top" className="flex items-center gap-2.5" aria-label="ReadyClaw home">
+        <a href="#top" className="flex items-center gap-2.5" aria-label={t.nav.homeAria}>
           <span className="h-2 w-2 rounded-full bg-accent dot-pulse" />
           <span className={`font-mono text-[13px] font-semibold uppercase tracking-[0.18em] ${wordmark}`}>
             Ready<span className="text-accent">Claw</span>
@@ -44,7 +39,7 @@ export function Nav({ onOrder }: { onOrder: () => void }) {
         </a>
 
         <nav className="hidden items-center gap-9 md:flex">
-          {LINKS.map((l) => (
+          {t.nav.links.map((l) => (
             <a
               key={l.href}
               href={l.href}
@@ -55,17 +50,20 @@ export function Nav({ onOrder }: { onOrder: () => void }) {
           ))}
         </nav>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-4">
+          <div className="hidden md:block">
+            <LanguageSwitcher inactiveClass={link} />
+          </div>
           <button
             onClick={onOrder}
             className={`hidden items-center gap-2 px-5 py-2.5 font-mono text-[11px] uppercase tracking-[0.16em] transition-all md:inline-flex ${orderBtn}`}
           >
-            Bestel <span aria-hidden>→</span>
+            {t.nav.order} <span aria-hidden>→</span>
           </button>
           <button
             onClick={() => setOpen((v) => !v)}
             className={`-mr-2 p-2 md:hidden ${burger}`}
-            aria-label="Menu"
+            aria-label={t.nav.menuAria}
             aria-expanded={open}
           >
             {open ? <X size={20} /> : <Menu size={20} />}
@@ -76,7 +74,7 @@ export function Nav({ onOrder }: { onOrder: () => void }) {
       {open && (
         <div className="border-t border-border bg-background md:hidden">
           <div className="flex flex-col gap-1 px-6 py-4">
-            {LINKS.map((l) => (
+            {t.nav.links.map((l) => (
               <a
                 key={l.href}
                 href={l.href}
@@ -86,6 +84,9 @@ export function Nav({ onOrder }: { onOrder: () => void }) {
                 {l.label}
               </a>
             ))}
+            <div className="border-b border-border py-3">
+              <LanguageSwitcher inactiveClass="text-ink-soft hover:text-foreground" layout="stack" />
+            </div>
             <button
               onClick={() => {
                 setOpen(false);
@@ -93,7 +94,7 @@ export function Nav({ onOrder }: { onOrder: () => void }) {
               }}
               className="mt-3 bg-foreground px-5 py-3 text-center font-mono text-xs uppercase tracking-[0.16em] text-background"
             >
-              Bestel →
+              {t.nav.order} →
             </button>
           </div>
         </div>

@@ -15,21 +15,20 @@ import {
   isWhatsAppConfigured,
   whatsappLink,
 } from "@/config";
+import { useI18n } from "@/i18n/I18nProvider";
+import type { Dictionary } from "@/i18n/types";
 
-const schema = z.object({
-  name: z.string().trim().min(1, "Naam is verplicht").max(100),
-  email: z.string().trim().email("Ongeldig e-mailadres").max(255),
-  phone: z.string().trim().max(40).optional().or(z.literal("")),
-  has_mac: z.string().max(40),
-  mode: z.string().max(40),
-  notes: z.string().max(2000).optional().or(z.literal("")),
-});
-
-const TIER_LABELS: Record<TierId, string> = {
-  basic: "Basic — €899",
-  custom: "Custom — vanaf €1.199",
-  jarvis: "Jarvis — €2.499",
-};
+/** Build the validation schema with localized messages (logic unchanged). */
+function makeSchema(t: Dictionary) {
+  return z.object({
+    name: z.string().trim().min(1, t.order.errors.nameRequired).max(100),
+    email: z.string().trim().email(t.order.errors.emailInvalid).max(255),
+    phone: z.string().trim().max(40).optional().or(z.literal("")),
+    has_mac: z.string().max(40),
+    mode: z.string().max(40),
+    notes: z.string().max(2000).optional().or(z.literal("")),
+  });
+}
 
 export function OrderModal({
   tier,
@@ -38,6 +37,8 @@ export function OrderModal({
   tier: TierId | null;
   onOpenChange: (open: boolean) => void;
 }) {
+  const { t } = useI18n();
+  const o = t.order;
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -56,7 +57,7 @@ export function OrderModal({
       return;
     }
 
-    const parsed = schema.safeParse({
+    const parsed = makeSchema(t).safeParse({
       name: fd.get("name"),
       email: fd.get("email"),
       phone: fd.get("phone") || "",
@@ -65,22 +66,24 @@ export function OrderModal({
       notes: fd.get("notes") || "",
     });
     if (!parsed.success) {
-      setError(parsed.error.issues[0]?.message ?? "Validatiefout");
+      setError(parsed.error.issues[0]?.message ?? o.errors.validation);
       return;
     }
 
     if (!isWeb3FormsConfigured) {
-      setError("Bestellingen worden nog gekoppeld. Neem contact op via WhatsApp of het formulier hieronder.");
+      setError(o.errors.notConfigured);
       return;
     }
 
     setSubmitting(true);
     try {
+      // Payload field-keys are kept constant (the Web3Forms integration); only
+      // the human-readable subject and tier label are localized.
       const payload = {
         access_key: WEB3FORMS_ACCESS_KEY,
-        subject: `Nieuwe ReadyClaw-bestelling — ${TIER_LABELS[tier]}`,
+        subject: `${o.emailSubjectPrefix}${o.tierLabels[tier]}`,
         from_name: "ReadyClaw website",
-        tier: TIER_LABELS[tier],
+        tier: o.tierLabels[tier],
         naam: parsed.data.name,
         email: parsed.data.email,
         telefoon: parsed.data.phone || "—",
@@ -94,11 +97,11 @@ export function OrderModal({
         body: JSON.stringify(payload),
       });
       const data = await res.json();
-      if (!data.success) throw new Error(data.message || "Onbekende fout");
+      if (!data.success) throw new Error(data.message || o.errors.unknown);
       setDone(true);
       form.reset();
     } catch {
-      setError("Er ging iets mis. Probeer opnieuw of stuur ons een WhatsApp.");
+      setError(o.errors.generic);
     } finally {
       setSubmitting(false);
     }
@@ -117,12 +120,10 @@ export function OrderModal({
       <DialogContent className="max-w-lg border-border bg-background">
         <DialogHeader>
           <DialogTitle className="font-display text-3xl tracking-[-0.01em]">
-            {done ? "Bestelling ontvangen" : `Bestel ${tier ? TIER_LABELS[tier] : ""}`}
+            {done ? o.doneTitle : `${o.titlePrefix}${tier ? o.tierLabels[tier] : ""}`}
           </DialogTitle>
           <DialogDescription className="text-ink-soft">
-            {done
-              ? "We nemen binnen 24u contact op."
-              : "Vul je gegevens in. Geen verplichting — we mailen eerst."}
+            {done ? o.doneDescription : o.formDescription}
           </DialogDescription>
         </DialogHeader>
 
@@ -131,7 +132,7 @@ export function OrderModal({
             <div className="flex h-12 w-12 items-center justify-center bg-accent text-accent-foreground">
               <Check />
             </div>
-            <p className="mono-label text-ink-soft">Check je inbox voor de bevestiging</p>
+            <p className="mono-label text-ink-soft">{o.doneHint}</p>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4" action="https://api.web3forms.com/submit">
@@ -145,30 +146,13 @@ export function OrderModal({
               className="absolute left-[-9999px] h-0 w-0 opacity-0"
             />
 
-            <Field label="Naam" name="name" required />
-            <Field label="Email" name="email" type="email" required />
-            <Field label="Telefoon (optioneel)" name="phone" />
-            <Select
-              label="Heb je al een Mac mini?"
-              name="has_mac"
-              options={[
-                { v: "Nee", l: "Nee" },
-                { v: "Ja, alleen remote setup", l: "Ja, alleen remote setup" },
-                { v: "Weet ik niet", l: "Weet ik niet" },
-              ]}
-            />
-            <Select
-              label="Lokaal of cloud?"
-              name="mode"
-              options={[
-                { v: "Lokaal", l: "Lokaal" },
-                { v: "Cloud", l: "Cloud" },
-                { v: "Hybride", l: "Hybride" },
-                { v: "Weet ik niet", l: "Weet ik niet" },
-              ]}
-            />
+            <Field label={o.fieldName} name="name" required />
+            <Field label={o.fieldEmail} name="email" type="email" required />
+            <Field label={o.fieldPhone} name="phone" />
+            <Select label={o.fieldHasMac} name="has_mac" options={o.hasMacOptions} />
+            <Select label={o.fieldMode} name="mode" options={o.modeOptions} />
             <div>
-              <label className="mono-label text-ink-soft">Notities</label>
+              <label className="mono-label text-ink-soft">{o.fieldNotes}</label>
               <textarea
                 name="notes"
                 rows={3}
@@ -185,23 +169,23 @@ export function OrderModal({
             >
               {submitting ? (
                 <>
-                  <Loader2 size={14} className="animate-spin" /> Bezig…
+                  <Loader2 size={14} className="animate-spin" /> {o.submitting}
                 </>
               ) : (
-                "Verstuur bestelling →"
+                o.submit
               )}
             </button>
 
             {isWhatsAppConfigured && (
               <a
                 href={whatsappLink(
-                  `Hoi ReadyClaw! Ik wil graag ${tier ? TIER_LABELS[tier] : "een pakket"} bestellen.`,
+                  `${o.waMessagePrefix}${tier ? o.tierLabels[tier] : o.waMessageFallback}${o.waMessageSuffix}`,
                 )}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex w-full items-center justify-center gap-2 border border-input py-3 font-mono text-xs uppercase tracking-[0.16em] text-foreground transition-colors hover:border-accent hover:text-accent"
               >
-                <MessageCircle size={14} /> Liever via WhatsApp
+                <MessageCircle size={14} /> {o.whatsAppCta}
               </a>
             )}
           </form>
@@ -252,9 +236,9 @@ function Select({
         defaultValue={options[0].v}
         className="mt-1.5 w-full border border-input bg-secondary px-3 py-2 text-sm outline-none focus:border-accent"
       >
-        {options.map((o) => (
-          <option key={o.v} value={o.v}>
-            {o.l}
+        {options.map((opt) => (
+          <option key={opt.v} value={opt.v}>
+            {opt.l}
           </option>
         ))}
       </select>
