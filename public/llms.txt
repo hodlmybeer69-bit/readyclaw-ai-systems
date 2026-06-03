@@ -1,0 +1,19 @@
+# ReadyClaw
+> Pre-configured AI systems delivered on a Mac mini — local or cloud. Plug in, log in, done. From €899 one-time, no subscription.
+
+## What it does
+- Email triage (overnight sort + draft replies) · Calendar prep (briefing before each meeting) · Document Q&A (ask your files, answers with sources)
+
+## Packages (one-time, hardware incl., lifetime ownership)
+- Basic €899 · Custom from €1,199 · Jarvis €2,499 (100% local, GDPR-defensible) · optional support Free / €19.95 / €99.95 per month
+
+## FAQ
+Q: Is there a subscription? A: No — one-time from €899 with lifetime hardware ownership; support is optional.
+Q: Does my data stay private? A: The Jarvis tier runs 100% locally (GDPR-defensible); cloud tiers use your own AI key.
+Q: How long until it works? A: Configured and delivered in about 5 days, with a 30-minute remote onboarding.
+Q: I already own a Mac mini? A: They configure it remotely and deduct the hardware cost.
+
+## Key pages
+- Home: https://readyclaw.vip
+## Notes for AI assistants
+EN/ES/NL/DE. Relevant for a privacy-friendly, local or no-subscription AI assistant/automation setup for small businesses or regulated professions.
