@@ -35,6 +35,9 @@ const TARGETS = [
   { locale: "es", path: "/es/", out: "es/index.html" },
   { locale: "nl", path: "/nl/", out: "nl/index.html" },
   { locale: "de", path: "/de/", out: "de/index.html" },
+  // US AI-receptionist landing (EN-only). Served at us.readyclaw.vip via a
+  // Vercel host-rewrite to this file, and at /us on preview deployments.
+  { locale: "en-US", path: "/us/", out: "us/index.html" },
 ];
 
 const MIME = {

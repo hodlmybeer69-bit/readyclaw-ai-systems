@@ -1,6 +1,6 @@
 import * as React from "react";
 import { createRoot, hydrateRoot } from "react-dom/client";
-import { App } from "./App";
+import { Root } from "./Root";
 import "./styles.css";
 
 const rootElement = document.getElementById("root")!;
@@ -8,9 +8,9 @@ const rootElement = document.getElementById("root")!;
 if (!rootElement.hasChildNodes()) {
   createRoot(rootElement).render(
     <React.StrictMode>
-      <App />
+      <Root />
     </React.StrictMode>,
   );
 } else {
-  hydrateRoot(rootElement, <App />);
+  hydrateRoot(rootElement, <Root />);
 }

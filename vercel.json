@@ -2,6 +2,13 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "rewrites": [
+    {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "us.readyclaw.vip" }],
+      "destination": "/us/index.html"
+    },
+    { "source": "/us", "destination": "/us/index.html" },
+    { "source": "/us/:path*", "destination": "/us/index.html" },
     { "source": "/es/:path*", "destination": "/es/index.html" },
     { "source": "/nl/:path*", "destination": "/nl/index.html" },
     { "source": "/de/:path*", "destination": "/de/index.html" },
