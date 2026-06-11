@@ -7,7 +7,7 @@ import type { TierId } from "@/App";
  * All four locale files (`en`, `es`, `nl`, `de`) implement this exact shape —
  * TypeScript therefore guarantees no locale is missing a key (no placeholders,
  * no silent fallbacks). Prices, package ids, the WhatsApp number and the
- * Web3Forms payload field-keys deliberately live OUTSIDE this dictionary in
+ * form-relay payload field-keys deliberately live OUTSIDE this dictionary in
  * `config.ts` / the components, so translation can never touch them.
  */
 export interface Dictionary {

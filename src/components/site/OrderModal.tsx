@@ -9,12 +9,8 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import type { TierId } from "@/App";
-import {
-  WEB3FORMS_ACCESS_KEY,
-  isWeb3FormsConfigured,
-  isWhatsAppConfigured,
-  whatsappLink,
-} from "@/config";
+import { isWhatsAppConfigured, whatsappLink } from "@/config";
+import { submitFormRelay } from "@/lib/form-relay";
 import { useI18n } from "@/i18n/I18nProvider";
 import type { Dictionary } from "@/i18n/types";
 
@@ -70,34 +66,20 @@ export function OrderModal({
       return;
     }
 
-    if (!isWeb3FormsConfigured) {
-      setError(o.errors.notConfigured);
-      return;
-    }
-
     setSubmitting(true);
     try {
-      // Payload field-keys are kept constant (the Web3Forms integration); only
-      // the human-readable subject and tier label are localized.
-      const payload = {
-        access_key: WEB3FORMS_ACCESS_KEY,
-        subject: `${o.emailSubjectPrefix}${o.tierLabels[tier]}`,
-        from_name: "ReadyClaw website",
-        tier: o.tierLabels[tier],
-        naam: parsed.data.name,
+      const sent = await submitFormRelay({
+        site: "readyclaw",
+        name: parsed.data.name,
         email: parsed.data.email,
-        telefoon: parsed.data.phone || "—",
-        heeft_mac_mini: parsed.data.has_mac,
-        modus: parsed.data.mode,
-        notities: parsed.data.notes || "—",
-      };
-      const res = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify(payload),
+        phone: parsed.data.phone || "",
+        message: `BESTELLING — ${o.tierLabels[tier]}
+
+Heeft Mac mini: ${parsed.data.has_mac}
+Modus: ${parsed.data.mode}
+Notities: ${parsed.data.notes || "—"}`,
       });
-      const data = await res.json();
-      if (!data.success) throw new Error(data.message || o.errors.unknown);
+      if (!sent) throw new Error(o.errors.unknown);
       setDone(true);
       form.reset();
     } catch {
@@ -135,7 +117,7 @@ export function OrderModal({
             <p className="mono-label text-ink-soft">{o.doneHint}</p>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="space-y-4" action="https://api.web3forms.com/submit">
+          <form onSubmit={handleSubmit} className="space-y-4">
             {/* honeypot — hidden from humans */}
             <input
               type="text"
