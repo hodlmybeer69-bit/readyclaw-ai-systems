@@ -151,6 +151,7 @@ export interface Dictionary {
     modeOptions: { v: string; l: string }[];
     submit: string;
     submitting: string;
+    consent: string;
     whatsAppCta: string;
     waMessagePrefix: string;
     waMessageSuffix: string;

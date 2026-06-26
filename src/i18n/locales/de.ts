@@ -324,6 +324,7 @@ export const de: Dictionary = {
       { v: "Weiß ich nicht", l: "Weiß ich nicht" },
     ],
     submit: "Bestellung senden →",
+    consent: "Mit dem Absenden stimmen Sie zu, dass wir Ihre Daten nur zur Bearbeitung Ihrer Bestellung verwenden.",
     submitting: "Senden…",
     whatsAppCta: "Lieber per WhatsApp",
     waMessagePrefix: "Hallo ReadyClaw! Ich möchte gern ",

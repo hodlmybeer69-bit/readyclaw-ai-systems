@@ -327,6 +327,7 @@ export const nl: Dictionary = {
       { v: "Weet ik niet", l: "Weet ik niet" },
     ],
     submit: "Verstuur bestelling →",
+    consent: "Door te verzenden ga je akkoord dat we je gegevens alleen gebruiken om je bestelling te verwerken.",
     submitting: "Bezig…",
     whatsAppCta: "Liever via WhatsApp",
     waMessagePrefix: "Hoi ReadyClaw! Ik wil graag ",

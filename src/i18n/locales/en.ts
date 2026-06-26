@@ -327,6 +327,7 @@ export const en: Dictionary = {
       { v: "Not sure", l: "Not sure" },
     ],
     submit: "Send order →",
+    consent: "By submitting, you agree we use your details only to handle your order.",
     submitting: "Sending…",
     whatsAppCta: "Prefer WhatsApp",
     waMessagePrefix: "Hi ReadyClaw! I'd like to order ",

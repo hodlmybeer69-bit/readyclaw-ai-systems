@@ -158,6 +158,8 @@ Notities: ${parsed.data.notes || "—"}`,
               )}
             </button>
 
+            <p className="text-[11px] leading-snug text-muted-foreground/70">{o.consent}</p>
+
             {isWhatsAppConfigured && (
               <a
                 href={whatsappLink(
