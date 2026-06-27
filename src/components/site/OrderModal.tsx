@@ -144,8 +144,8 @@ Notities: ${parsed.data.notes || "—"}`,
 
             {error && <p className="font-mono text-sm text-destructive">{error}</p>}
 
-            <label className="flex items-start gap-2 text-[11px] leading-snug text-muted-foreground/70">
-              <input type="checkbox" name="consent" required className="mt-0.5 h-4 w-4 flex-none" />
+            <label htmlFor="consent" className="flex items-start gap-2 text-[11px] leading-snug text-muted-foreground/70">
+              <input id="consent" type="checkbox" name="consent" required className="mt-0.5 h-4 w-4 flex-none" />
               <span>{o.consent}</span>
             </label>
 
@@ -195,8 +195,9 @@ function Field({
 }) {
   return (
     <div>
-      <label className="mono-label text-ink-soft">{label}</label>
+      <label htmlFor={name} className="mono-label text-ink-soft">{label}</label>
       <input
+        id={name}
         name={name}
         type={type}
         required={required}
@@ -217,8 +218,9 @@ function Select({
 }) {
   return (
     <div>
-      <label className="mono-label text-ink-soft">{label}</label>
+      <label htmlFor={name} className="mono-label text-ink-soft">{label}</label>
       <select
+        id={name}
         name={name}
         defaultValue={options[0].v}
         className="mt-1.5 w-full border border-input bg-secondary px-3 py-2 text-sm outline-none focus:border-accent"
