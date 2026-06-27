@@ -144,6 +144,11 @@ Notities: ${parsed.data.notes || "—"}`,
 
             {error && <p className="font-mono text-sm text-destructive">{error}</p>}
 
+            <label className="flex items-start gap-2 text-[11px] leading-snug text-muted-foreground/70">
+              <input type="checkbox" name="consent" required className="mt-0.5 h-4 w-4 flex-none" />
+              <span>{o.consent}</span>
+            </label>
+
             <button
               type="submit"
               disabled={submitting}
@@ -157,8 +162,6 @@ Notities: ${parsed.data.notes || "—"}`,
                 o.submit
               )}
             </button>
-
-            <p className="text-[11px] leading-snug text-muted-foreground/70">{o.consent}</p>
 
             {isWhatsAppConfigured && (
               <a
