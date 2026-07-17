@@ -1,7 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://readyclaw.vip/</loc>
-    <lastmod>2026-07-02</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://readyclaw.vip/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://readyclaw.vip/es/"/>
+    <xhtml:link rel="alternate" hreflang="nl" href="https://readyclaw.vip/nl/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://readyclaw.vip/de/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://readyclaw.vip/"/>
+    <lastmod>2026-06-26</lastmod>
+  </url>
+  <url>
+    <loc>https://readyclaw.vip/es/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://readyclaw.vip/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://readyclaw.vip/es/"/>
+    <xhtml:link rel="alternate" hreflang="nl" href="https://readyclaw.vip/nl/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://readyclaw.vip/de/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://readyclaw.vip/"/>
+    <lastmod>2026-06-26</lastmod>
+  </url>
+  <url>
+    <loc>https://readyclaw.vip/nl/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://readyclaw.vip/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://readyclaw.vip/es/"/>
+    <xhtml:link rel="alternate" hreflang="nl" href="https://readyclaw.vip/nl/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://readyclaw.vip/de/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://readyclaw.vip/"/>
+    <lastmod>2026-06-26</lastmod>
+  </url>
+  <url>
+    <loc>https://readyclaw.vip/de/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://readyclaw.vip/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://readyclaw.vip/es/"/>
+    <xhtml:link rel="alternate" hreflang="nl" href="https://readyclaw.vip/nl/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://readyclaw.vip/de/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://readyclaw.vip/"/>
+    <lastmod>2026-06-26</lastmod>
   </url>
 </urlset>
