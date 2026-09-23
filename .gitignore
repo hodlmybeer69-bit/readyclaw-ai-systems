@@ -30,3 +30,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# secrets (23-9 cleanup, unused Supabase scaffold vars)
+.env
+.env.local
+.env.*.local
